@@ -1,23 +1,47 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const path = require('path');
 const cors = require('cors');
 const authRoutes =require('./routes/authRoutes')
 const userRoutes = require('./routes/userRoutes');
 const connectDB = require('./db');
 
-dotenv.config();
+const http = require('http');
+const { Server } = require('socket.io');
+const socketController = require('./controllers/socketController');
+
+
 const app = express();
+dotenv.config();
+
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST']
+    }
+});
+
 const PORT = process.env.PORT || 5000;
 
 //Middlewares
 app.use(cors());
 app.use(express.json());
 
+app.use(express.static(path.join(__dirname, 'public')));
+
 //Routes
 app.use('/api/users', userRoutes);
 app.use('/api', authRoutes);
-connectDB();
 
-app.listen(PORT, () => {
+try {
+    //connectDB().then();
+}catch (e) {
+    console.log(e)
+}
+
+socketController(io);
+
+server.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
-  });
+});
