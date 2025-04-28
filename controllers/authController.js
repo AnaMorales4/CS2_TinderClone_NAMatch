@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
+const {SECRET_JWT}= process.env
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -20,7 +21,7 @@ const loginUser = async (req, res) => {
     // Crear el token 
     const token = jwt.sign(
       { userId: user._id, email: user.email },
-      'este-es-mi-jwt-key', // firmar token para  otras rutas que sí requieren autenticación
+      SECRET_JWT, // firmar token para  otras rutas que sí requieren autenticación
       { expiresIn: '1h' }
     );
 
