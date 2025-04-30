@@ -1,27 +1,27 @@
+const dotenv = require('dotenv');
+dotenv.config();
+
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
-const {SECRET_JWT}= process.env
+const { SECRET_JWT } = process.env;
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Buscar usuario por email
     const user = await User.findOne({ email });
 
     if (!user) {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
 
-    // Comparar contraseñas
     if (user.password !== password) {
       return res.status(401).json({ message: 'Contraseña incorrecta' });
     }
 
-    // Crear el token 
     const token = jwt.sign(
-      { userId: user._id, email: user.email },
-      SECRET_JWT, // firmar token para  otras rutas que sí requieren autenticación
+      { email: user.email, password: user.password },
+      SECRET_JWT,
       { expiresIn: '1h' }
     );
 
@@ -34,10 +34,11 @@ const loginUser = async (req, res) => {
         email: user.email,
         age: user.age,
         gender: user.gender,
+        profilePhoto: user.profilePhoto,
       },
     });
   } catch (error) {
-    console.error(error);
+    console.error('[ERROR]', error.message);
     res.status(500).json({ message: 'Error del servidor' });
   }
 };

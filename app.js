@@ -35,7 +35,7 @@ app.use('/api/users', userRoutes);
 app.use('/api', authRoutes);
 
 try {
-    //connectDB().then();
+    connectDB().then();
 }catch (e) {
     console.log(e)
 }
