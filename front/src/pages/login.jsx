@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { loginUser } from '../services/authService';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography, Container, Box } from '@mui/material';
-import { styled } from '@mui/system';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -68,6 +67,18 @@ const Login = () => {
       </form>
 
       {error && <Typography sx={{ color: 'red', marginTop: '10px' }}>{error}</Typography>}
+
+      <Box sx={{ textAlign: 'center', marginTop: '20px' }}>
+        <Typography variant="body2">
+          ¿No tienes cuenta?
+          <Button
+            onClick={() => navigate('/register')}
+            sx={{ textTransform: 'none', marginLeft: '5px', color: '#673ab7' }}
+          >
+            Regístrate
+          </Button>
+        </Typography>
+      </Box>
     </Container>
   );
 };
