@@ -1,40 +1,93 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Socket.IO chat privado</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Chat Privado con Socket.IO</title>
     <style>
-        body { margin: 0; padding-bottom: 3rem; font-family: sans-serif; }
-        #form, #loginForm {
-            position: fixed; left: 0; right: 0;
-            padding: 0.5rem; display: flex;
-            box-sizing: border-box; background: rgba(0,0,0,0.1); backdrop-filter: blur(5px);
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
         }
-        #loginForm { top: 0; }
-        #form { bottom: 0; }
-        input, button {
-            margin: 0.25rem; padding: 0.5rem; border-radius: 0.5rem; border: none;
+        header {
+            padding: 1rem;
+            background: #0078d4;
+            color: white;
+            text-align: center;
+            font-size: 1.2rem;
         }
-        #input, #senderId, #receiverId { flex-grow: 1; }
-        #messages { list-style: none; margin: 4rem 0 4rem 0; padding: 0; }
-        #messages li { padding: 0.5rem; border-bottom: 1px solid #ccc; }
-        #messages .send{
+        ul#messages {
+            flex: 1;
+            padding: 1rem;
+            margin: 0;
+            list-style: none;
+            overflow-y: auto;
+        }
+        ul#messages li {
+            margin: 0.5rem 0;
+            padding: 0.6rem 1rem;
+            border-radius: 1rem;
+            word-break: break-word;
+            clear: both;
+        }
+        .send {
+            background: #dcf8c6;
+            margin-left: auto;
             text-align: right;
         }
+        .receiver {
+            background: #fff;
+            margin-right: auto;
+            text-align: left;
+        }
+        form {
+            display: flex;
+            padding: 0.75rem;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.9);
+            width: 100%;
+            position: fixed;
+            left: 0;
+        }
+        #loginForm { top: 0; }
+        #form { bottom: 0; display: none; }
+        input, button {
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+        input { flex: 1; }
+        button {
+            background: #0078d4;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        button:hover { background: #005fa3; }
     </style>
 </head>
 <body>
 
+<header>Chat Privado</header>
+
 <form id="loginForm">
-    <input id="senderId" placeholder="Tu ID (senderId)" />
-    <input id="receiverId" placeholder="ID de destino (receiverId)" />
-    <button>Entrar</button>
+    <input id="senderId" placeholder="Tu ID" required />
+    <input id="receiverId" placeholder="ID del receptor" required />
+    <button type="submit">Entrar</button>
 </form>
 
 <ul id="messages"></ul>
 
-<form id="form" style="display: none;">
-    <input id="input" placeholder="Escribe tu mensaje..." autocomplete="off" />
-    <button>Enviar</button>
+<form id="form">
+    <input id="input" placeholder="Escribe tu mensaje..." autocomplete="off" required />
+    <button type="submit">➤</button>
 </form>
 
 <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
@@ -43,43 +96,56 @@
     let senderId = '';
     let receiverId = '';
 
-    const loginForm = document.getElementById('loginForm');
+    const loginForm   = document.getElementById('loginForm');
     const messageForm = document.getElementById('form');
-    const senderInput = document.getElementById('senderId');
+    const senderInput   = document.getElementById('senderId');
     const receiverInput = document.getElementById('receiverId');
-    const input = document.getElementById('input');
-    const messages = document.getElementById('messages');
+    const input         = document.getElementById('input');
+    const messages      = document.getElementById('messages');
+
+    socket.on('history', (history) => {
+        messages.innerHTML = '';
+        debugger
+        history.forEach(msg => {
+            const li = document.createElement('li');
+            li.textContent = `${msg.senderId.name}: ${msg.text}`;
+            li.className = msg.senderId._id === senderId ? 'send' : 'receiver';
+            messages.appendChild(li);
+        });
+        messages.scrollTop = messages.scrollHeight;
+    });
+
+    socket.on('chat message', (msg) => {
+        if (msg.senderId._id === senderId || msg.receiverId._id === senderId) {
+            const li = document.createElement('li');
+            li.textContent = `${msg.senderId.name}: ${msg.text}`;
+            li.className = msg.senderId._id === senderId ? 'send' : 'receiver';
+            messages.appendChild(li);
+            messages.scrollTop = messages.scrollHeight;
+        }
+    });
 
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        senderId = senderInput.value.trim();
+        senderId   = senderInput.value.trim();
         receiverId = receiverInput.value.trim();
-        if (senderId && receiverId) {
-            loginForm.style.display = 'none';
-            messageForm.style.display = 'flex';
-        }
+        if (!senderId || !receiverId) return;
+
+        socket.emit('join', senderId);
+
+        socket.emit('load history', { senderId, receiverId });
+
+        loginForm.style.display   = 'none';
+        messageForm.style.display = 'flex';
     });
 
     messageForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        if (input.value.trim()) {
-            socket.emit('chat message', {
-                senderId,
-                receiverId,
-                text: input.value.trim()
-            });
-            input.value = '';
-        }
-    });
+        const text = input.value.trim();
+        if (!text) return;
 
-    socket.on('chat message', (data) => {
-        if (data.receiverId === senderId || data.senderId === senderId) {
-            const item = document.createElement('li');
-            item.textContent = data.text;
-            item.className = data.senderId === senderId?'send':'receiver'
-            messages.appendChild(item);
-            window.scrollTo(0, document.body.scrollHeight);
-        }
+        socket.emit('chat message', { senderId, receiverId, text });
+        input.value = '';
     });
 </script>
 
