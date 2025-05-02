@@ -43,4 +43,50 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { loginUser };
+const registerUser = async (req, res) => {
+  const { name, email, password, age, gender } = req.body;
+
+  try {
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser) {
+      return res.status(400).json({ message: 'El usuario ya está registrado' });
+    }
+
+    const newUser = new User({
+      name,
+      email,
+      password,
+      age,
+      gender,
+    });
+
+    await newUser.save();
+
+    const token = jwt.sign(
+      { email: newUser.email, password: newUser.password },
+      SECRET_JWT,
+      { expiresIn: '1h' }
+    );
+
+    res.status(201).json({
+      message: 'Registro exitoso',
+      token,
+      user: {
+        id: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+        age: newUser.age,
+        gender: newUser.gender,
+      },
+    });
+  } catch (error) {
+    console.error('[ERROR]', error.message);
+    res.status(500).json({ message: 'Error del servidor' });
+  }
+};
+
+module.exports = {
+  loginUser,
+  registerUser,
+};
