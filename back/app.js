@@ -10,6 +10,11 @@ const http = require('http');
 const { Server } = require('socket.io');
 const socketController = require('./controllers/socketController');
 
+//swagger
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./documentation/swagger');
+
+
 
 const app = express();
 dotenv.config();
@@ -27,7 +32,7 @@ const PORT = process.env.PORT || 5000;
 //Middlewares
 app.use(cors());
 app.use(express.json());
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(express.static(path.join(__dirname, 'public')));
 
 //Routes
