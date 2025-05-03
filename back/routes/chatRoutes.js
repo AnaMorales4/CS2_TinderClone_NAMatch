@@ -1,3 +1,7 @@
+const express = require("express");
+const router = express.Router();
+const chatController = require("../controllers/socketController");
+
 /**
  * @swagger
  * /chat/history:
@@ -30,6 +34,7 @@
  *       500:
  *         description: Error loading chat history
  */
+router.post("/history", chatController.getChatHistory);
 
 /**
  * @swagger
@@ -67,3 +72,10 @@
  *       500:
  *         description: Error sending message
  */
+router.post("/message", chatController.sendMessage);
+
+module.exports = router;
+
+
+
+
