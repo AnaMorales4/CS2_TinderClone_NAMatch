@@ -15,7 +15,6 @@ exports.getMatches = async (req, res) => {
   
       res.json({ matches: user.matches });
     } catch (error) {
-      console.error(error);
       res.status(500).json({ msg: "Error.", error });
     }
   };

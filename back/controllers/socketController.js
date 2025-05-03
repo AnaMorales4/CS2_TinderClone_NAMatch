@@ -34,7 +34,6 @@ exports.getChatHistory = async (req, res) => {
 
     res.status(200).json(history);
   } catch (err) {
-    console.error("Error loading chat history:", err);
     res.status(500).json({ message: "Error loading chat history" });
   }
 };
@@ -68,7 +67,6 @@ exports.sendMessage = async (req, res) => {
 
     res.status(201).json(populated);
   } catch (err) {
-    console.error("Error sending message:", err);
     res.status(500).json({ message: "Error sending message" });
   }
 };
