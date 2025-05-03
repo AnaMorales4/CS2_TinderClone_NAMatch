@@ -38,7 +38,7 @@ const loginUser = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error('[ERROR]', error.message);
+  
     res.status(500).json({ message: 'Error del servidor' });
   }
 };
@@ -81,7 +81,6 @@ const registerUser = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error('[ERROR]', error.message);
     res.status(500).json({ message: 'Error del servidor' });
   }
 };
