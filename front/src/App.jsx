@@ -1,21 +1,35 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
+import { AuthProvider } from './context/authContext';
 import Register from'./pages/Register'
 import Home from './pages/home';
 import Login from './pages/login';
+import Matches from './pages/Matches'
+import  Profile from './pages/Profile'
 import Navbar from './components/Navbar';
+import PrivateRoute from './routes/privateRoutes';
 
 
+const PrivateLayout =()=>(
+  <>
+    <Navbar/>
+  </>
+)
 function App() {
   return (
-    <BrowserRouter>
-      <Navbar />
+    <AuthProvider>
+      <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path='/register'element={<Register/>}/>
-        <Route path="/home" element={<Home />} />
+
+        <Route element={<PrivateRoute><PrivateLayout /></PrivateRoute>}>
+         <Route path="/home" element={<Home />} />
+         <Route path="/matches" element={<Matches/>} />
+         <Route path="/profile" element={< Profile/>} />
+        </Route>
       </Routes>
     </BrowserRouter>
+    </AuthProvider>
   );
 }
 
