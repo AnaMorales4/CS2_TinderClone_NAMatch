@@ -1,8 +1,8 @@
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 dotenv.config();
 
-const User = require('../models/user');
-const jwt = require('jsonwebtoken');
+const User = require("../models/user");
+const jwt = require("jsonwebtoken");
 const { SECRET_JWT } = process.env;
 
 const loginUser = async (req, res) => {
@@ -12,11 +12,11 @@ const loginUser = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(404).json({ message: 'Usuario no encontrado' });
+      return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
     if (user.password !== password) {
-      return res.status(401).json({ message: 'Contraseña incorrecta' });
+      return res.status(401).json({ message: "Contraseña incorrecta" });
     }
 
     const token = jwt.sign(
@@ -26,7 +26,7 @@ const loginUser = async (req, res) => {
     );
 
     res.status(200).json({
-      message: 'Login exitoso',
+      message: "Login exitoso",
       token,
       user: {
         id: user._id,
@@ -35,11 +35,14 @@ const loginUser = async (req, res) => {
         age: user.age,
         gender: user.gender,
         profilePhoto: user.profilePhoto,
+        interests: user.interests,
+        bio: user.bio,
+        swipes: user.swipes,
+        matches: user.matches,
       },
     });
   } catch (error) {
-  
-    res.status(500).json({ message: 'Error del servidor' });
+    res.status(500).json({ message: "Error del servidor", error });
   }
 };
 
@@ -50,7 +53,7 @@ const registerUser = async (req, res) => {
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-      return res.status(400).json({ message: 'El usuario ya está registrado' });
+      return res.status(400).json({ message: "El usuario ya está registrado" });
     }
 
     const newUser = new User({
@@ -66,11 +69,11 @@ const registerUser = async (req, res) => {
     const token = jwt.sign(
       { email: newUser.email, password: newUser.password },
       SECRET_JWT,
-      { expiresIn: '1h' }
+      { expiresIn: "1h" }
     );
 
     res.status(201).json({
-      message: 'Registro exitoso',
+      message: "Registro exitoso",
       token,
       user: {
         id: newUser._id,
@@ -81,7 +84,7 @@ const registerUser = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({ message: 'Error del servidor' });
+    res.status(500).json({ message: "Error del servidor" });
   }
 };
 
