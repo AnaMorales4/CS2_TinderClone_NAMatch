@@ -1,6 +1,5 @@
 import { AppBar, Toolbar, Avatar, Box, Typography } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
-import Navbar from '../components/Navbar';
 
 const Home = () => {
   const user = JSON.parse(localStorage.getItem('user'));
@@ -8,7 +7,6 @@ const Home = () => {
 
   return (
     <>
-      <Navbar />
       <Box
         display="flex"
         flexDirection="column"
