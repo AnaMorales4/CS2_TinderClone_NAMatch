@@ -1,4 +1,4 @@
-import { Avatar, Box, Typography } from '@mui/material';
+import { AppBar, Toolbar, Avatar, Box, Typography } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 
 const Home = () => {
@@ -6,30 +6,32 @@ const Home = () => {
   const hasProfilePhoto = user?.profilePhoto;
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      minHeight="100vh"
-      bgcolor="#f5f5f5"
-      padding={2}
-    >
-      {hasProfilePhoto ? (
-        <Avatar
-          alt={user.name}
-          src={user.profilePhoto}
-          sx={{ width: 100, height: 100, marginBottom: 2 }}
-        />
-      ) : (
-        <Avatar sx={{ width: 100, height: 100, marginBottom: 2, bgcolor: '#bdbdbd' }}>
-          <PersonIcon fontSize="large" />
-        </Avatar>
-      )}
-      <Typography variant="h4" gutterBottom>
-        Bienvenido, {user?.name || 'Usuario'}
-      </Typography>
-    </Box>
+    <>
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        minHeight="calc(100vh - 64px)" // Resta altura del AppBar (64px)
+        bgcolor="#f5f5f5"
+        padding={2}
+      >
+        {hasProfilePhoto ? (
+          <Avatar
+            alt={user.name}
+            src={user.profilePhoto}
+            sx={{ width: 100, height: 100, marginBottom: 2 }}
+          />
+        ) : (
+          <Avatar sx={{ width: 100, height: 100, marginBottom: 2, bgcolor: '#bdbdbd' }}>
+            <PersonIcon fontSize="large" />
+          </Avatar>
+        )}
+        <Typography variant="h4" gutterBottom>
+          Bienvenido, {user?.name || 'Usuario'}
+        </Typography>
+      </Box>
+    </>
   );
 };
 
