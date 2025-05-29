@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { loginUser } from '../services/authService';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography, Container, Box } from '@mui/material';
-
+import {useAuth} from '../context/authContext'
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const {login}=useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -15,7 +16,7 @@ const Login = () => {
     try {
       const data = await loginUser(email, password);
       console.log('Login exitoso:', data);
-      localStorage.setItem('token', data.token);
+      login(data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
       navigate('/home');
     } catch (err) {
