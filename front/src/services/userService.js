@@ -13,3 +13,10 @@ export const updateUser = async (id, userData) => {
   const response = await axios.put(`${API}/users/${id}`, userData);
   return response.data;
 };
+
+export const getAllUsers= async () => {
+  const response = await axios.get(`${API}/users`);
+  return response.data;
+};
+
+

@@ -7,6 +7,7 @@ import Matches from './pages/Matches'
 import  Profile from './pages/Profile'
 import Navbar from './components/Navbar';
 import PrivateRoute from './routes/privateRoutes';
+import UserProfile from './pages/UserProfile';
 
 
 const PrivateLayout =()=>(
@@ -27,6 +28,7 @@ function App() {
          <Route path="/home" element={<Home />} />
          <Route path="/matches" element={<Matches/>} />
          <Route path="/profile" element={<Profile/>} />
+         <Route path="/profile/:id" element={<UserProfile />} />
         </Route>
       </Routes>
     </BrowserRouter>
