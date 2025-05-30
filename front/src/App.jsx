@@ -6,6 +6,7 @@ import Login from './pages/login';
 import Matches from './pages/Matches'
 import  Profile from './pages/Profile'
 import Navbar from './components/Navbar';
+import Chat from './pages/Chat';
 import PrivateRoute from './routes/privateRoutes';
 import UserProfile from './pages/UserProfile';
 
@@ -29,6 +30,7 @@ function App() {
          <Route path="/matches" element={<Matches/>} />
          <Route path="/profile" element={<Profile/>} />
          <Route path="/profile/:id" element={<UserProfile />} />
+         <Route path="/chat/:id" element={<Chat />} />
         </Route>
       </Routes>
     </BrowserRouter>

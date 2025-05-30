@@ -33,6 +33,9 @@ const Navbar = () => {
           <Button color="inherit" component={RouterLink} to="/matches">
             Matches
           </Button>
+          <Button color="inherit" component={RouterLink} to="/chat">
+            Chat
+          </Button>
         </Box>
         <Box display="flex" alignItems="center" gap={1}>
           {hasProfilePhoto ? (
