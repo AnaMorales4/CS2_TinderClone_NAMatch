@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import { AuthProvider } from './context/authContext';
 import Register from'./pages/Register'
 import Home from './pages/home';
@@ -12,6 +12,7 @@ import PrivateRoute from './routes/privateRoutes';
 const PrivateLayout =()=>(
   <>
     <Navbar/>
+    <Outlet /> 
   </>
 )
 function App() {
@@ -25,7 +26,7 @@ function App() {
         <Route element={<PrivateRoute><PrivateLayout /></PrivateRoute>}>
          <Route path="/home" element={<Home />} />
          <Route path="/matches" element={<Matches/>} />
-         <Route path="/profile" element={< Profile/>} />
+         <Route path="/profile" element={<Profile/>} />
         </Route>
       </Routes>
     </BrowserRouter>
