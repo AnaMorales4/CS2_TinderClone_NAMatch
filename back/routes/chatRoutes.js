@@ -34,7 +34,7 @@ const chatController = require("../controllers/socketController");
  *       500:
  *         description: Error loading chat history
  */
-router.post("/history", chatController.getChatHistory);
+//router.post("/history", chatController.getChatHistory);
 
 /**
  * @swagger
@@ -72,7 +72,7 @@ router.post("/history", chatController.getChatHistory);
  *       500:
  *         description: Error sending message
  */
-router.post("/message", chatController.sendMessage);
+//router.post("/message", chatController.sendMessage);
 
 module.exports = router;
 
