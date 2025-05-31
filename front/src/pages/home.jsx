@@ -1,12 +1,6 @@
 import {
   Box,
   Typography,
-  Button,
-  Card,
-  CardContent,
-  CardMedia,
-  Grid,
-  Chip,
   CircularProgress,
   Avatar,
 } from "@mui/material";
@@ -14,6 +8,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import { useEffect, useState } from "react";
 import { getAllUsers } from "../services/userService";
 import { useNavigate } from "react-router-dom";
+import UserCardList from "../components/UsersCardsList";
 
 const PHOTO_HEIGHT = 170; // zona fija para la imagen / avatar
 
@@ -58,76 +53,7 @@ const Home = () => {
         Bienvenido, {user?.name || "Usuario"}
       </Typography>
 
-      <Grid container spacing={2} justifyContent="center" mt={4}>
-        {users.map((u) => (
-          <Grid key={u._id} item xs={12} sm={6} md={4} lg={3} display="flex">
-            {" "}
-            {/* hace que todas las tarjetas midan lo mismo */}
-            <Card
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                width: "100%",
-                height: "100%",
-              }}
-            >
-              {/* --- Zona de imagen / avatar ------------- */}
-              {u.profilePhoto?.length ? (
-                <CardMedia
-                  component="img"
-                  height={PHOTO_HEIGHT}
-                  image={u.profilePhoto[0]}
-                  alt={u.name}
-                  onError={(e) => {
-                    // Si la imagen falla, quitamos src y dejamos que se renderice el avatar
-                    e.target.onerror = null;
-                    e.target.src = "";
-                    e.target.style.display = "none";
-                    e.target.parentElement.appendChild(avatarFallback(u.name));
-                  }}
-                />
-              ) : (
-                avatarFallback(u.name)
-              )}
-
-              {/* --- Contenido -------------------------- */}
-              <CardContent sx={{ flexGrow: 1 }}>
-                <Typography variant="h6">
-                  {u.name}, {u.age}
-                </Typography>
-
-                <Typography variant="body2" color="text.secondary" mb={1}>
-                  {u.gender.charAt(0).toUpperCase() + u.gender.slice(1)}
-                </Typography>
-
-                <Box mb={1}>
-                  {u.interests?.map((interest, i) => (
-                    <Chip
-                      key={i}
-                      label={interest}
-                      size="small"
-                      sx={{ mr: 0.5, mb: 0.5 }}
-                    />
-                  ))}
-                </Box>
-
-                <Typography variant="body2" color="text.secondary">
-                  {u.bio}
-                </Typography>
-
-                <Button
-                  variant="contained"
-                  size="small"
-                  sx={{ mt: 2 }}
-                  onClick={() => navigate(`/profile/${u._id}`)}
-                >
-                  Ver perfil
-                </Button>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+      <UserCardList users={users} />
     </Box>
   );
 };
