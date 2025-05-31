@@ -21,7 +21,7 @@ const Navbar = () => {
     <AppBar position="static" color="primary">
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant="h6" component={RouterLink} to="/home" sx={{ color: '#fff', textDecoration: 'none' }}>
-          NA Match
+          NAMatch
         </Typography>
         <Box display="flex" gap={2}>
           <Button color="inherit" component={RouterLink} to="/home">
@@ -32,9 +32,6 @@ const Navbar = () => {
           </Button>
           <Button color="inherit" component={RouterLink} to="/matches">
             Matches
-          </Button>
-          <Button color="inherit" component={RouterLink} to="/chat">
-            Chat
           </Button>
         </Box>
         <Box display="flex" alignItems="center" gap={1}>
