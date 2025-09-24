@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     container_name: gano_junior_frontend
     ports:
-      - "8080:80"  # React served by nginx
+      - "8081:80"  # React served by nginx
     networks:
       - gano_junior
 
