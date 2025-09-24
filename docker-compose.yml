@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    container_name: gano_junior_frontend
+    ports:
+      - "8080:80"  # React served by nginx
+    networks:
+      - gano_junior
+
+  backend:
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    container_name: gano_junior_backend
+    ports:
+      - "5000:5000"
+    networks:
+      - gano_junior
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/mydatabase
+    volumes:
+      - ./back:/app   # Mount local code for live reload
+    command: sh -c "npm install && npx nodemon app.js"  # Use nodemon to watch and restart backend
+
+  mongo:
+    image: mongo:latest
+    container_name: gano_junior_mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - gano_junior
+
+networks:
+  gano_junior:
+    driver: bridge
+
+volumes:
+  mongo-data:
