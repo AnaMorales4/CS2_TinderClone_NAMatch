@@ -1,7 +1,8 @@
 # CS2_TinderClone_NAMatch
-Subject Name: Software Construction 2 
 
-Project Name: TinderClone 
+Subject Name: Software Construction 2
+
+Project Name: TinderClone
 
 Team: NAMatch
 
@@ -21,3 +22,9 @@ Compilation and execution instructions: 1.
 • Clone the repository
 • You must have nodejs installed
 • npm install to install all the dependencies listed in the package.json file.
+
+add to the .env of the backend:
+
+SECRET_JWT=esteesmijwtkey
+
+MONGO_URI=mongodb://localhost:27017/mydatabase
