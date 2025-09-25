@@ -31,7 +31,7 @@ const PORT = process.env.PORT || 5000;
 
 //Middlewares
 app.use(cors({
-    origin: 'http://localhost:8081',
+    origin: 'http://gano_junior_frontend:8081',
     credentials: true
 }));
 app.use(express.json());

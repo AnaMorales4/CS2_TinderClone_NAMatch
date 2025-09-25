@@ -18,7 +18,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import { getAllUsers } from "../services/userService";
 
-const socket = io("http://localhost:5000");
+const socket = io("http://gano_junior_backend:5000");
 
 const Chat = () => {
   const navigate = useNavigate();
