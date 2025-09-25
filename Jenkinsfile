@@ -7,7 +7,8 @@ pipeline {
     }
 
     environment {
-        // Define any env vars if needed
+        SECRET_JWT = 'esteesmijwtkey'
+        MONGO_URI = 'mongodb://localhost:27017/mydatabase'
     }
 
     stages {
