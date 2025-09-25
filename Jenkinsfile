@@ -52,7 +52,13 @@ pipeline {
             steps {
                 echo "Running backend container"
                 sh '''
-                    docker run -d -p 5000:5000 --name back-container-test my-back-test
+                    docker run -d \
+  -p 5000:5000 \
+  --name back-container-test \
+  -e MONGO_URI=$MONGO_URI \
+  -e SECRET_JWT=$SECRET_JWT \
+  my-back-test
+
                 '''
             }
         }
