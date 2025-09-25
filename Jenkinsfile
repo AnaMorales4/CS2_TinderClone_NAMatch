@@ -8,7 +8,7 @@ pipeline {
 
     environment {
         SECRET_JWT = 'esteesmijwtkey'
-        MONGO_URI = 'mongodb://gano_junior_mongo:27017/mydatabase'
+        MONGO_URI = 'mongodb://3.131.85.236:27017/mydatabase'
     }
 
     stages {
