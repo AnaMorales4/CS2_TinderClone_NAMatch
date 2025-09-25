@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     triggers {
-        // Polls GitHub for PR changes (you can remove this if using webhooks)
         pollSCM('* * * * *')
     }
 
@@ -14,7 +13,6 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the pull request code
                 checkout scm
             }
         }
