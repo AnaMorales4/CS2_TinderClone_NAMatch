@@ -31,8 +31,8 @@ const PORT = process.env.PORT || 5000;
 
 //Middlewares
 app.use(cors({
-    origin: 'http://gano_junior_frontend:8081',
-    credentials: true
+    origin: '*',
+    credentials: false
 }));
 app.use(express.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
