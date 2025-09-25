@@ -51,7 +51,7 @@ pipeline {
         stage('Run Backend Container') {
             steps {
                 echo "Running backend container"
-                sh '''
+                sh """
                     docker run -d \
   -p 5000:5000 \
   --name back-container-test \
@@ -59,7 +59,7 @@ pipeline {
   -e SECRET_JWT=$SECRET_JWT \
   my-back-test
 
-                '''
+                """
             }
         }
 
