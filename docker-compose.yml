@@ -23,7 +23,8 @@ services:
     depends_on:
       - mongo
     environment:
-      - MONGO_URI=mongodb://mongo:27017/mydatabase
+      - MONGO_URI=${MONGO_URI}
+      - SECRET_JWT=${SECRET_JWT}
     volumes:
       - ./back:/app   # Mount local code for live reload
     command: sh -c "npm install && npx nodemon app.js"  # Use nodemon to watch and restart backend

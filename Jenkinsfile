@@ -77,10 +77,12 @@ pipeline {
 
         stage('Running Docker Compose') {
             steps {
-                echo "Running docker compose -e MONGO_URI=$MONGO_URI -e SECRET_JWT=$SECRET_JWT"
-                sh '''
+                echo "Running docker compose"
+                sh """
+                export MONGO_URI=$MONGO_URI
+                export SECRET_JWT=$SECRET_JWT
                     docker compose up --build
-                '''
+                """
             }
         }
     }
