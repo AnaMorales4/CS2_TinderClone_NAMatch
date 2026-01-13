@@ -1,3 +1,8 @@
 node_modules/
 back/node_modules/
 front/node_module/
+.terraform/
+*.hcl
+*.info
+*.tfstate
+*.tfstate.backup

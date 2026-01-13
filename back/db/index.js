@@ -1,17 +1,25 @@
 const mongoose = require("mongoose");
-const uri =
-  "mongodb+srv://marianaospinahenao0908:3IuAcxoCNPIXgTLb@namatchdb.yoflwkv.mongodb.net/NAMatchDB?retryWrites=true&w=majority&appName=NAMatchDB";
+
+// Read the connection URI from the environment variable.
+// When running with `docker-compose up`, this will be "mongodb://mongo:27017/mydatabase"
+const uri = process.env.MONGO_URI;
 
 const connectDB = async () => {
+  // It's good practice to check if the URI exists
+  if (!uri) {
+    console.error("Error: MONGO_URI environment variable not defined.");
+    process.exit(1);
+  }
+
   try {
     await mongoose.connect(uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log("MongoDB conectado correctamente");
+    console.log("MongoDB connected successfully to the Docker container");
   } catch (err) {
-    console.error("Error de conexión:", err.message);
-    process.exit(1);
+    console.error("Connection error:", err.message);
+    process.exit(1); // Exit process with failure
   }
 };
 
